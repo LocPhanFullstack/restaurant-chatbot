@@ -5,7 +5,7 @@ let getHomePage = (req, res) => {
     return res.render('homepage.ejs');
 };
 
-let postWebHook = (req, res) => {
+let postWebhook = (req, res) => {
     let body = req.body;
 
     console.log(`\u{1F7EA} Received webhook:`);
@@ -22,6 +22,14 @@ let postWebHook = (req, res) => {
             // Get the sender PSID
             let sender_psid = webhook_event.sender.id;
             console.log('Sender PSID: ' + sender_psid);
+
+            // Check if the event is a message or postback and
+            // pass the event to the appropriate handler function
+            if (webhook_event.message) {
+                handleMessage(sender_psid, webhook_event.message);
+            } else if (webhook_event.postback) {
+                handlePostback(sender_psid, webhook_event.postback);
+            }
         });
         // Returns a '200 OK' response to all requests
         res.status(200).send('EVENT_RECEIVED');
@@ -33,7 +41,7 @@ let postWebHook = (req, res) => {
     }
 };
 
-let getWebHook = (req, res) => {
+let getWebhook = (req, res) => {
     let verifyToken = process.env.VERIFY_TOKEN;
     // Parse the query params
     let mode = req.query['hub.mode'];
@@ -146,4 +154,4 @@ function callSendAPI(sender_psid, response) {
     );
 }
 
-module.exports = { getHomePage, getWebHook, postWebHook };
+module.exports = { getHomePage, getWebhook, postWebhook };
