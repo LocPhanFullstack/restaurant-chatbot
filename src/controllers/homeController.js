@@ -161,7 +161,7 @@ let setupProfile = async (req, res) => {
     // Construct the message body
     let request_body = {
         get_started: { payload: 'GET_STARTED' },
-        whitelisted_domain: ['https://siuuuuuuu-restaurant-bot.herokuapp.com/'],
+        whitelisted_domains: ['https://siuuuuuuu-restaurant-bot.herokuapp.com/'],
     };
 
     // Send the HTTP request to the Messenger Platform
@@ -173,6 +173,7 @@ let setupProfile = async (req, res) => {
             json: request_body,
         },
         (err, res, body) => {
+            console.log(body);
             if (!err) {
                 console.log('Setup user profile successfully!!!');
             } else {
